@@ -8,17 +8,6 @@ $(function () {
         $("#mc_embed_signup").hide();
     });
 
-    $("#event-calendar").calendar({
-        events_source: [
-            {
-                "id": 293,
-                "title": "Event 1",
-                "class": 'event-important',
-                "start": 1383118938815, // Milliseconds
-                "end": 1383123938815 // Milliseconds
-            }
-    ]});
-
     var fnames = new Array();var ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='MMERGE3';ftypes[3]='text';fnames[4]='MMERGE4';ftypes[4]='text';
     try {
         var jqueryLoaded=jQuery;

@@ -1,11 +1,22 @@
 {% extends "_base.html" %}
 {% block content %}
   <div class="container">
-    <h2>Under Construction</h2>
+    <h2>SBCS Event Calendar</h2>
     <div id="calendar-container">
       <div id="event-calendar">
       </div>
     </div>
   </div>
+{% endblock %}
+{% block javascript%}
+  <script type="text/javascript">
+
+$(document).ready(function() {
+    $("#event-calendar").fullCalendar({
+        events: "https://www.google.com/calendar/feeds/sbcs.acm%40gmail.com/public/full/"
+    });
+});
+
+</script>
 {% endblock %}
 
