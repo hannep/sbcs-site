@@ -1,0 +1,86 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.navbar-brand > .navbar-img {
+    margin-top: -15px;
+    margin-bottom: -10px;
+    margin-right: 5px;
+}
+
+.jumbotron.sbcs-jumbotron {
+    background-image: url('../images/mhacks.jpg');
+    background-position-y: -50px;
+    background-size: 100%;
+    min-height: 600px;
+    color: #eee;
+    text-shadow:
+        -1px -1px 1px #333,
+        1px -1px 1px #333,
+        -1px 1px 1px #333,
+        1px 1px 1px #333;
+}
+
+.jumbotron .jumbotron-header {
+    font-size: 45px;
+}
+
+.navbar-form-container {
+    position: relative;
+}
+
+#mc_embed_signup {
+    border-radius: 5px;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    left: 0;
+    border: 1px solid #666;
+    display: none;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+#mc_embed_signup:after, #mc_embed_signup:before {
+    bottom: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+#mc_embed_signup:after {
+    border-color: rgba(136, 183, 213, 0);
+    border-bottom-color: #fff;
+    border-width: 10px;
+    left: 50%;
+    margin-left: -10px;
+}
+#mc_embed_signup:before {
+    border-color: rgba(102, 102, 102, 0);
+    border-bottom-color: #666;
+    border-width: 11px;
+    left: 50%;
+    margin-left: -11px;
+}
+
+.column-image {
+    width: 60%;
+}
+
+#mc_embed_signup .close {
+    margin-right: 5px;
+    margin-top: 2px;
+    position: relative;
+    z-index:1;
+}
+
+#calendar-container {
+  padding: 2em;
+}
+
+.container.schedule {
+    max-width: 800px;
+}
