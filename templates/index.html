@@ -1,15 +1,15 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="jumbotron sbcs-jumbotron">
-    <div class="container">
-    <h2 class="jumbotron-header">
-      The Stony Brook Computing Society
-    </h2>
-    <p>
-      This site is under construction.
-    </p>
-    </div>
-  </div>
+<div class="container top">
+  <ul id="slideshow">
+    <li>
+      Image 1
+    </li>
+    <li>
+      Image 2
+    </li>
+  </ul>
+</div>
   <div class="container">
     <div class="row">
       <div class="col-lg-4">
@@ -32,5 +32,20 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block javascript %}
+<script>
+$(function () {
+  "use strict";
+  $("#slideshow").slidesjs({
+    width: 1000,
+    height: 500,
+    play: {
+      interval: 5000,
+      auto: true,
+    }
+  });
+});
+</script>
 {% endblock %}
 

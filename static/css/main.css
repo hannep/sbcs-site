@@ -84,3 +84,7 @@ body {
 .container.schedule {
     max-width: 800px;
 }
+
+#slideshow {
+    padding: 0;
+}
