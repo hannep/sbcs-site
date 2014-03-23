@@ -9,7 +9,9 @@ setup(
     install_requires = [
         'flask>=0.6',
         'Flask-SQLAlchemy>=1.0',
-        'Flask-Login>=0.2.10'
+        'Flask-Login>=0.2.10',
+        'passlib>=1.6.2',
+        'bcrypt>=1.0.2',
     ],
     include_package_data = True,
     zip_safe = False
