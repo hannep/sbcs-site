@@ -1,0 +1,1 @@
+from sbcswebsite.application import app as application
