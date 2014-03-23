@@ -8,8 +8,11 @@ setup(
     # installed or upgraded on the target machine
     install_requires = [
         'flask>=0.6',
-        'Flask-SQLAlchemy>=1.0'
+        'Flask-SQLAlchemy>=1.0',
+        'Flask-Login>=0.2.10'
     ],
+    include_package_data = True,
+    zip_safe = False
 
     # could also include long_description, download_url, classifiers, etc.
 )

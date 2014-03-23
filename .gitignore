@@ -1,5 +1,6 @@
 venv
 dist
 build
+sbcs_settings.py
 *.pyc
 *.egg-info

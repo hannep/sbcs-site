@@ -1,0 +1,2 @@
+recursive-include sbcswebsite/static/css *.jpg *.css *.js
+recursive-include sbcswebsite/templates *.html

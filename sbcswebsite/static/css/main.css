@@ -88,3 +88,7 @@ body {
 #slideshow {
     padding: 0;
 }
+
+.form-label {
+    display: block;
+}
