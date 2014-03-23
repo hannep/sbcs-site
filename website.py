@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template  
-app = Flask(__name__)
+app = Flask(__name__, static_folder=None)
 
 @app.route("/")
 def index(): 
@@ -21,7 +21,6 @@ def jobs():
 @app.route("/blog")
 def blog(): 
 	return render_template("blog.html")
-
 
 if __name__ == "__main__":
 	app.run() 
