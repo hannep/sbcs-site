@@ -2,6 +2,7 @@ from application import app
 from flask import Flask, request
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user, logout_user
+from sbcswebsite.models import Announcement
 
 @app.route("/")
 def index(): 
@@ -13,7 +14,8 @@ def calendar():
 
 @app.route("/announcements")
 def announcements(): 
-	return render_template("announcements.html")
+	announcement_list = Announcement.query.order_by(Announcement.id.desc()).limit(10).all() 
+	return render_template("announcements.html", announcements=announcement_list)
 
 @app.route("/jobs")
 def jobs(): 
