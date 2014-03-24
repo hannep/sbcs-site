@@ -15,7 +15,11 @@ setup(
     ],
     include_package_data = True,
     zip_safe = False,
-    scripts = ['scripts/sbcswebsite_init.py']
+    scripts = [
+        'scripts/sbcswebsite_init.py',
+        'scripts/sbcswebsite_announce.py',
+        'scripts/sbcswebsite_db.py'
+    ]
 
     # could also include long_description, download_url, classifiers, etc.
 )

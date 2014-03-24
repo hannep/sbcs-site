@@ -3,8 +3,6 @@ from flask import Flask, request
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user, logout_user
 
-import sbcswebsite.auth
-
 @app.route("/")
 def index(): 
 	return render_template("index.html")

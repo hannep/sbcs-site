@@ -15,8 +15,8 @@ def initialize(directory):
 
     debug_file = os.path.join(directory, 'debug.py')
     if not os.path.exists(debug_file):
-        with open(debug_file, "w"):
-            debug_file.write(textwrap.dedent(
+        with open(debug_file, "w") as outfile:
+            outfile.write(textwrap.dedent(
                 """
                 from sbcswebsite.application import app
                 app.run()
