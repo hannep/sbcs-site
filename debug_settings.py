@@ -1,3 +1,0 @@
-SECRET_KEY = "CHANGE ME"
-DEBUG = True
-SQLALCHEMY_DATABASE_URI = "sqlite:///../test.db"

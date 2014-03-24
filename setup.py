@@ -14,7 +14,8 @@ setup(
         'bcrypt>=1.0.2',
     ],
     include_package_data = True,
-    zip_safe = False
+    zip_safe = False,
+    scripts = ['scripts/sbcswebsite_init.py']
 
     # could also include long_description, download_url, classifiers, etc.
 )

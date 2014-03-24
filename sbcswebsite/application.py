@@ -8,7 +8,7 @@ import os
 
 app = Flask(__name__)
 
-app.config.from_envvar('SBCSWEBSITE_SETTINGS')
+app.config.from_object('sbcswebsite.config.config')
 
 #Shamelessly stolen from http://flask.pocoo.org/snippets/3/
 @app.before_request
