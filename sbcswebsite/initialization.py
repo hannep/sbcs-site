@@ -11,15 +11,15 @@ def initialize(directory):
     wsgi_file = os.path.join(directory, 'application.wsgi')
     if not os.path.exists(wsgi_file):
         with open(wsgi_file, "w") as outfile:
-            outfile.write("from sbcswebsite.application import app as application\n")
+            outfile.write("from sbcswebsite.website import application\n")
 
     debug_file = os.path.join(directory, 'debug.py')
     if not os.path.exists(debug_file):
         with open(debug_file, "w") as outfile:
             outfile.write(textwrap.dedent(
                 """
-                from sbcswebsite.application import app
-                app.run()
+                from sbcswebsite.website import application
+                application.run()
                 """
             ))
     media_dir = os.path.join(directory, "media")
