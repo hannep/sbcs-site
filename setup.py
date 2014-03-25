@@ -18,6 +18,8 @@ setup(
     scripts = [
         'scripts/sbcswebsite_init.py',
         'scripts/sbcswebsite_announce.py',
+        'scripts/sbcswebsite_blog.py',
+        'scripts/sbcswebsite_job.py',
         'scripts/sbcswebsite_db.py'
     ]
 

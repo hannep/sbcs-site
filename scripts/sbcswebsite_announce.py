@@ -13,7 +13,7 @@ except:
 
 announcement.title = raw_input("Enter a title: ")
 print "Enter the contents of the file:"
-announcement.message_html = sys.stdin.read()
+announcement.content_html = sys.stdin.read()
 
 db.session.add(announcement)
 db.session.commit()

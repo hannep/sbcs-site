@@ -5,10 +5,10 @@ from base64 import urlsafe_b64encode as b64encode
 
 import datetime
 import os
+import sbcswebsite.config
 
-app = Flask(__name__)
-
-app.config.from_object('sbcswebsite.config.config')
+app = Flask("sbcswebsite")
+app.config.from_object(sbcswebsite.config.config)
 
 #Shamelessly stolen from http://flask.pocoo.org/snippets/3/
 @app.before_request
@@ -24,5 +24,3 @@ def generate_csrf_token():
     return flask.session['_csrf_token']
 
 app.jinja_env.globals['csrf_token'] = generate_csrf_token 
-
-import sbcswebsite.views
