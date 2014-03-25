@@ -11,7 +11,11 @@ def initialize(directory):
     wsgi_file = os.path.join(directory, 'application.wsgi')
     if not os.path.exists(wsgi_file):
         with open(wsgi_file, "w") as outfile:
-            outfile.write("from sbcswebsite.website import application\n")
+            outfile.write(textwrap.dedent("""
+                import os
+                os.environ["SBCSWEBSITE_CONFIG"] = os.environ.get("SBCSWEBSITE_CONFIG", None) or "{0}"
+                from sbcswebsite.website import application
+                """.format(target_config)))
 
     debug_file = os.path.join(directory, 'debug.py')
     if not os.path.exists(debug_file):
