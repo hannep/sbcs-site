@@ -4,10 +4,12 @@ This package runs the SBCS website. It is a simple Flask package, and should be 
 
 ## Running in Debug.
 
-`python setup.py install
+```
+python setup.py install
 sbcswebsite_init.py
 sbcswebsite_db.py
-python debug.py`
+python debug.py
+```
 
 ## Installing on Apache
 
