@@ -25,9 +25,9 @@ def initialize(directory):
     media_dir = os.path.join(directory, "media")
     if not os.path.exists(media_dir):
         os.mkdir(media_dir)
-    static_dir = os.path.join(package_dir, "static")
+    static_dir = os.path.join(directory, "static")
     if not os.path.exists(static_dir):
-        os.symlink(static_dir, os.path.join(directory, "static"))
+        os.symlink(os.path.join(package_dir, "static"), static_dir)
 
 
 
