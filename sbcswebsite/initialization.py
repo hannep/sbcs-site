@@ -7,7 +7,15 @@ def initialize(directory):
     global package_dir
     target_config = os.path.join(directory, 'sbcswebsite_config.py')
     if not os.path.exists(target_config):
-        shutil.copyfile(os.path.join(package_dir, 'example_config.py'), target_config)
+        with open(target_config, "w") as outfile:
+            outfile.write(textwrap.dedent("""
+                import os
+
+                _dir = os.path.abspath(os.path.dirname(__file__))
+                DEBUG = True
+                APP_SECRET = {0}
+                SQLALCHEMY_DATABASE_URI = "sqlite:///{{0}}".format(os.path.join(_dir, "test.db"))
+                """.format(repr(os.urandom(40)))))
     wsgi_file = os.path.join(directory, 'application.wsgi')
     if not os.path.exists(wsgi_file):
         with open(wsgi_file, "w") as outfile:

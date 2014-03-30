@@ -2,10 +2,12 @@
 {% block content %}
 
 {% for announcement in announcements %}
-  <h2 class="announcement-title title">{{ announcement.title}}</h2>
-  <div>
-    {{ announcement.content_html | safe }}
-  </div>
+  <article class="anouncement">
+    <h2 class="announcement-title title">{{ announcement.title}}</h2>
+    <div>
+      {{ announcement.content_html | safe }}
+    </div>
+  </article>
 {% endfor %}
 
 {% endblock %}
