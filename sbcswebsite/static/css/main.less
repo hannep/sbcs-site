@@ -2,6 +2,10 @@ body {
     padding-top: 50px;
 }
 
+html, body {
+    height: 100%;
+}
+
 .navbar-brand > .navbar-img {
     margin-top: -15px;
     margin-bottom: -10px;
@@ -113,4 +117,8 @@ footer.main-footer {
     text-align: center;
     background-color: @navbar-color;
     color: @navbar-text;
+}
+
+#main-content {
+    min-height: calc(~"100% - 20px");
 }
