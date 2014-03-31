@@ -1,14 +1,10 @@
-from setuptools import setup, find_packages
+from paver.easy import task, needs
+from paver.setuputils import setup
 
 from distutils.command.build import build
+from setuptools import find_packages
 import os.path
 import subprocess
-
-class NewBuild(build):
-    def run(self):
-        css_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "sbcswebsite/static/css")
-        subprocess.check_call(["lessc", os.path.join(css_dir, "main.less"), os.path.join(css_dir, "main.css")])
-        build.run(self)
 
 setup(
     name = "SBCS Site",
@@ -22,7 +18,6 @@ setup(
         'Flask-SQLAlchemy>=1.0',
         'Flask-Login>=0.2.10',
         'passlib>=1.6.2',
-        'bcrypt>=1.0.2',
     ],
     include_package_data = True,
     zip_safe = False,
@@ -34,9 +29,30 @@ setup(
         'scripts/sbcswebsite_db.py'
     ],
 
-    cmdclass = {
-        'build': NewBuild
-    }
-
     # could also include long_description, download_url, classifiers, etc.
 )
+
+@task
+def build_css():
+    css_dir = os.path.join(os.path.abspath(os.path.dirname(__file__)), "sbcswebsite/static/css")
+    subprocess.check_call(["lessc", os.path.join(css_dir, "main.less"), os.path.join(css_dir, "main.css")])
+
+@task
+@needs("build_css")
+def build():
+    pass
+
+@task
+@needs("build")
+def init_site():
+    initialize(os.getcwd())
+
+@task
+@needs("build", "setuptools.command.install")
+def install():
+    pass
+
+@task
+@needs("build", "setuptools.command.develop")
+def develop():
+    pass
