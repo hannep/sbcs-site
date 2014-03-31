@@ -20,3 +20,13 @@ python debug.py
 3. Set up your Apache VirtualHost to use mod_wsgi and point it at the site. The 'application.wsgi' file represents a sample wsgi file that you can use to run the application once you have set up Apache. You will probably also want to serve the static and media folders using Apache
 4.  Point Apache mod_wsgi at the config file using 'SetEnv SBCSWEBSITE_SETTINGS' in your VirtualHosts config for apache.
 
+
+## To Do
+- Fix calendar size 
+- Add About link at the bottom
+- Put in About page content 
+- Add Facebook page link to main page
+- Add Links box to main page 
+- Where to link to SIG pages? Boxes on the main page as well? 
+- Put in example Job Board post and intro text 
+- Write first blog post 

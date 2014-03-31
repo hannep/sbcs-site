@@ -12,10 +12,10 @@ def index():
 def calendar(): 
     return render_template("calendar.html")
 
-@app.route("/announcements")
-def announcements(): 
-    announcement_list = Announcement.query.order_by(Announcement.id.desc()).limit(10).all() 
-    return render_template("announcements.html", announcements=announcement_list)
+@app.route("/newsletter")
+def newsletter(): 
+    newsletter_list = Announcement.query.order_by(Announcement.id.desc()).limit(10).all() 
+    return render_template("news.html", newsletter=newsletter_list)
 
 @app.route("/jobs")
 def jobs(): 
