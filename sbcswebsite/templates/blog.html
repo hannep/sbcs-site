@@ -1,11 +1,14 @@
 {% extends "_base.html" %}
 {% block content %}
-
+<div class="main-content">
+      
 {% for blog_post in blog_posts %}
   <h2 class="blog-post-title title">{{ blog_post.title}}</h2>
   <div>
     {{ blog_post.content_html | safe }}
   </div>
 {% endfor %}
+
+</div>
 
 {% endblock %}
