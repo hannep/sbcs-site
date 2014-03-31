@@ -4,8 +4,10 @@ This package runs the SBCS website. It is a simple Flask package, and should be 
 
 ## Running in Debug.
 
+You should install paver, then run the following:
+
 ```
-python setup.py install
+paver install
 sbcswebsite_init.py
 sbcswebsite_db.py
 python debug.py
