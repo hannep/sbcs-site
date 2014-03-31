@@ -1,6 +1,5 @@
 body {
     padding-top: 50px;
-    padding-bottom: 50px;
 }
 
 .navbar-brand > .navbar-img {
@@ -78,7 +77,7 @@ body {
 }
 
 #calendar-container {
-  padding: 2em;
+  padding-top: 2em;
 }
 
 .container.schedule {
@@ -97,12 +96,22 @@ body {
     margin-right: 400px;
 }
 
+@light-gray: #E2E2E2;
+@navbar-color: #101010;
+@navbar-text: #999;
+
 .main-content article {
-    background-color: #E2E2E2;
+    background-color: @light-gray;
     padding: 20px;
     margin: 40px 0;
 }
 
 .main-content article > .title {
     margin-top: 10px;
+}
+
+footer.main-footer {
+    text-align: center;
+    background-color: @navbar-color;
+    color: @navbar-text;
 }

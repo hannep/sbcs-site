@@ -14,8 +14,8 @@ def initialize(directory):
                 _dir = os.path.abspath(os.path.dirname(__file__))
                 DEBUG = True
                 APP_SECRET = {0}
-                SQLALCHEMY_DATABASE_URI = "sqlite:///{{0}}".format(os.path.join(_dir, "test.db"))
-                """.format(repr(os.urandom(40)))))
+                SQLALCHEMY_DATABASE_URI = "sqlite:///{1}"
+                """.format(repr(os.urandom(40)), os.path.join(directory, "test.db"))))
     wsgi_file = os.path.join(directory, 'application.wsgi')
     if not os.path.exists(wsgi_file):
         with open(wsgi_file, "w") as outfile:
