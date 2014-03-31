@@ -1,0 +1,13 @@
+{% extends "_base.html" %}
+{% block content %}
+
+{% for newsletter in newsletters %}
+  <article class="anouncement">
+    <h2 class="newsletter-title title">{{ newsletter.title}}</h2>
+    <div>
+      {{ newsletter.content_html | safe }}
+    </div>
+  </article>
+{% endfor %}
+
+{% endblock %}
