@@ -4,11 +4,11 @@
     <title>The Stony Brook Computing Society</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link rel="stylesheet" type="text/css" href="static/css/fullcalendar.css"/>
-    <link href="static/css/main.css" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/fullcalendar.css') }}"/>
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet" media="screen">
     <link href="//cdn-images.mailchimp.com/embedcode/classic-081711.css" rel="stylesheet" type="text/css">
-    <link rel="shortcut icon" href="static/images/tinylogo.png"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/tinylogo.png') }}"/>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -61,16 +61,19 @@
         </div>
       </div>
     </div>
-    {% block content %} {% endblock %}
+    <div class="container">
+      <div class="main-content">
+        {% block content %} {% endblock %}
+      </div>
+    </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="static/js/jquery.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="static/js/fullcalendar.js"></script>
-    <script src="static/js/main.js"></script>
-    <script src="static/js/gcal.js"></script> 
-    <script src="static/js/bjqs-1.3.js"></script>
-    <script src="static/js/jquery.slides.js"></script>
-    <script src="static/js/bootstrap.js"></script>
+    <script src="{{ url_for('static', filename='js/fullcalendar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/gcal.js') }}"></script> 
+    <script src="{{ url_for('static', filename='js/jquery.slides.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
 
      {% block javascript %} {% endblock %}
   </body>

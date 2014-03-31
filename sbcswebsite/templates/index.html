@@ -1,0 +1,24 @@
+{% extends "_base.html" %}
+{% block content %}
+<div class="container top">
+  <h1>Under Construction</h1>
+</div>
+  <div class="container">
+  </div>
+{% endblock %}
+{% block javascript %}
+<script>
+$(function () {
+  "use strict";
+  $("#slideshow").slidesjs({
+    width: 1000,
+    height: 500,
+    play: {
+      interval: 5000,
+      auto: true,
+    }
+  });
+});
+</script>
+{% endblock %}
+
