@@ -25,3 +25,6 @@ python debug.py
 - Put in About page content 
 - Add Facebook page link to main page
 - Add Links box to main page 
+- Where to link to SIG pages? Boxes on the main page as well? 
+- Put in example Job Board post and intro text 
+- Write first blog post 
