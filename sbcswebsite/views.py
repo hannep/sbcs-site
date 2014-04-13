@@ -26,3 +26,8 @@ def jobs():
 def blog(): 
     blog_post_list = BlogPost.query.order_by(BlogPost.id.desc()).limit(10).all() 
     return render_template("blog.html", blog_posts=blog_post_list)
+
+@app.route("/ask")
+def ask(): 
+    return render_template("ask.html")
+
