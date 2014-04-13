@@ -34,17 +34,14 @@
         <div class="collapse navbar-collapse" id="collapsing-nav-links">
           <ul class="nav navbar-nav">
           <li>
-            <a href="calendar">Calendar</a>
+            <a href="{{url_for("calendar")}}">Calendar</a>
           </li>
           <li>
-            <a href="newsletter">Newsletter</a>
+            <a href="{{url_for("news")}}">News</a>
           </li>
           <li>
-            <a href="jobs">Job Board</a>
+            <a href="{{url_for("jobs")}}">Job Board</a>
           </li>
-          <li>
-            <a href="blog">Blog</a>
-          </li> 
         </ul>
           <div class="navbar-right navbar-form-container">
             <form class="navbar-form navbar-right" id="mailchimp-signup">
