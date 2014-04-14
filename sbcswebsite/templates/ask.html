@@ -19,10 +19,30 @@
       
 {% for question in questions %}
   <article class="question">
+    <img src="http://graph.facebook.com/{{question.facebook_user_id}}/picture">
     <h2 class="question-title title">{{ question.title}}</h2>
     <div>
       {{ question.content }}
     </div>
+    {% for answer in question.answers %}
+    <article class="answer">
+        <img src="http://graph.facebook.com/{{answer.facebook_user_id}}/picture">
+
+        <div>
+          {{ answer.content }}
+        </div>
+    </article>
+    {% endfor %}
+    <form action="{{url_for("post_answer")}}" method="POST">
+    <label>
+        <div>Answer</div>
+        <textarea name="content"></textarea>
+    </label>
+    <input type="submit" value="Post Answer">
+    <input type="hidden" name="_xsrf_token" value="{{xsrf_token()}}">
+    <input type="hidden" name="question_id" value="{{question.id}}">
+    </form>
+
   </article>
 {% endfor %}
 
