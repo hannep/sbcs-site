@@ -1,5 +1,31 @@
 {% extends "_base.html" %}
 {% block content %}
 <h1>Ask a question</h1>
+{%if is_fb_logged_in() %}
+<form action="{{url_for("post_question")}}" method="POST">
+<label><div>Title: </div><input name="title"></label>
+<label>
+    <div>Question</div>
+    <textarea name="content"></textarea>
+</label>
+<input type="submit" value="Post Question">
+<input type="hidden" name="_xsrf_token" value="{{xsrf_token()}}">
+</form>
+{% else %}
+<a href="{{url_for("login")}}">Login with Facebook</a>
+{% endif %}
+
+<div class="article-content">
+      
+{% for question in questions %}
+  <article class="question">
+    <h2 class="question-title title">{{ question.title}}</h2>
+    <div>
+      {{ question.content }}
+    </div>
+  </article>
+{% endfor %}
+
+</div>
 
 {% endblock %}

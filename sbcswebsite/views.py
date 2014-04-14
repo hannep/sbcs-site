@@ -1,8 +1,15 @@
 from application import app
-from flask import Flask, request
+from flask import Flask, request, session
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user, logout_user
-from sbcswebsite.models import Announcement, JobPost, BlogPost
+from sbcswebsite.models import Announcement, JobPost, BlogPost, Question, db
+from base64 import urlsafe_b64encode as b64encode, urlsafe_b64decode as b64decode
+import requests
+import os
+import urlparse
+import facebook
+from sbcswebsite.facebooktools import require_login, user_id
+from datetime import datetime
 
 @app.route("/")
 def index(): 
@@ -29,5 +36,68 @@ def blog():
 
 @app.route("/ask")
 def ask(): 
-    return render_template("ask.html")
+    questions = Question.query.order_by(Question.touched_date.desc()).limit(10).all()
+    return render_template("ask.html", questions=questions)
+
+@app.route("/post_question", methods=["POST"])
+@require_login
+def post_question():
+    question = Question()
+    question.title = request.form.get("title")
+    question.content = request.form.get("content")
+    question.touched_date = datetime.utcnow()
+    question.facebook_user_id = user_id()
+    db.session.add(question)
+    db.session.commit()
+    return redirect(url_for("ask"))
+
+@app.route("/login")
+def login():
+    oauth_state = b64encode(os.urandom(32))
+    session["oauth_state"] = oauth_state
+    return redirect(
+        "https://www.facebook.com/dialog/oauth?client_id={app_id}&redirect_uri={redirect_uri}&state={state}&scope={scope}"
+        .format(
+            app_id = app.config["FACEBOOK_APP_ID"],
+            redirect_uri = url_for("finish_login", _external=True),
+            state=oauth_state,
+            scope="user_groups"
+        )
+    )
+
+@app.route("/finish_login")
+def finish_login():
+    arg_state = request.args.get("state")
+    if arg_state is not None and arg_state != session.get("oauth_state"):
+        redirect(url_for("login"))
+    code = request.args.get("code")
+    if code is None:
+        redirect(url_for("login"))
+    base_url = "https://graph.facebook.com/oauth/access_token"
+    url = "{base}?client_id={app_id}&redirect_uri={redirect_uri}&client_secret={app_secret}&code={code}&scope={scope}".format(
+        base = base_url,
+        app_id = app.config["FACEBOOK_APP_ID"],
+        app_secret = app.config["FACEBOOK_APP_SECRET"],
+        redirect_uri = url_for("finish_login", _external=True),
+        code = code,
+        scope = "user_groups"
+    )
+    response = requests.get(url)
+    if not response.text.startswith("access_token"):
+        return "Invalid login", 400
+    parsed_response = urlparse.parse_qs(response.text)
+
+    access_token = parsed_response["access_token"][0]
+    graph = facebook.GraphAPI(access_token)
+    group_ids = [int(group[u"id"]) for group in graph.get_connections("me", "groups")[u"data"]]
+    print group_ids
+    if app.config["SBCS_GROUP_ID"] not in group_ids:
+        return "Not in facebook group", 400
+
+    session["fb_access_token"] = access_token
+    session["fb_token_expires"] = parsed_response["expires"][0]
+
+    me = graph.get_object("me")
+    session["fb_id"] = int(me[u"id"])
+    return redirect(url_for("ask"))
 

@@ -15,6 +15,8 @@ def initialize(directory):
                 DEBUG = True
                 APP_SECRET = {0}
                 SQLALCHEMY_DATABASE_URI = "sqlite:///{1}"
+                FACEBOOK_APP_ID = "FACEBOOK_APP_ID here"
+                SBCS_GROUP_ID = 1 # GROUP ID HERE
                 """.format(repr(os.urandom(40)), os.path.join(directory, "test.db"))))
     wsgi_file = os.path.join(directory, 'application.wsgi')
     if not os.path.exists(wsgi_file):

@@ -5,6 +5,22 @@ from distutils.command.build import build
 from setuptools import find_packages
 import os.path
 import subprocess
+import os, sys
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
+import sbcswebsite.initialization as initlib
+
+from sbcswebsite.application import app
+from sbcswebsite.models import db
+
+
+@task
+def initialize():
+    initlib.initialize(os.getcwd())
+
+@task
+def init_db():
+    db.create_all()
 
 @task
 def build_css():
@@ -20,13 +36,3 @@ def build():
 @needs("build")
 def init_site():
     initialize(os.getcwd())
-
-@task
-@needs("build", "setuptools.command.install")
-def install():
-    pass
-
-@task
-@needs("build", "setuptools.command.develop")
-def develop():
-    pass
