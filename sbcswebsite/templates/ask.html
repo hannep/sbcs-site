@@ -2,12 +2,13 @@
 {% block content %}
 <h1>Ask a question</h1>
 {%if is_fb_logged_in() %}
-<form action="{{url_for("post_question")}}" method="POST">
+<form class="question-form" action="{{url_for("post_question")}}" method="POST">
 <label><div>Title: </div><input name="title"></label>
 <label>
     <div>Question</div>
     <textarea name="content"></textarea>
 </label>
+<input type="hidden" class="tag-input" name="tags">
 <input type="submit" value="Post Question">
 <input type="hidden" name="_xsrf_token" value="{{xsrf_token()}}">
 </form>
@@ -24,6 +25,11 @@
     <div>
       {{ question.content }}
     </div>
+    {% for tag in question.tags %}
+    <div class="question-tag">
+        {{tag.tag}}
+    </div>
+    {% endfor %}
     {% for answer in question.answers %}
     <article class="answer">
         <img src="http://graph.facebook.com/{{answer.facebook_user_id}}/picture">

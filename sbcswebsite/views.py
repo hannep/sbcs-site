@@ -2,7 +2,7 @@ from application import app
 from flask import Flask, request, session
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_required, current_user, logout_user
-from sbcswebsite.models import Announcement, JobPost, BlogPost, Question, Answer, db
+from sbcswebsite.models import Announcement, JobPost, BlogPost, Question, Answer, Tag, db
 from base64 import urlsafe_b64encode as b64encode, urlsafe_b64decode as b64decode
 import requests
 import os
@@ -37,13 +37,6 @@ def blog():
 @app.route("/ask")
 def ask(): 
     questions = Question.query.order_by(Question.touched_date.desc()).limit(10).all()
-    answers = Answer.query.filter(Answer.question_id.in_([q.id for q in questions]))
-    question_lookup = {}
-    for question in questions:
-        question.answers = []
-        question_lookup[question.id] = question
-    for answer in answers:
-        question_lookup[answer.question_id].answers.append(answer)
 
     return render_template("ask.html", questions=questions)
 
@@ -53,6 +46,7 @@ def post_question():
     question = Question()
     question.title = request.form.get("title")
     question.content = request.form.get("content")
+    question.tags = [Tag(tag=tag) for tag in request.form.get("tags").split(",")]
     question.touched_date = datetime.utcnow()
     question.facebook_user_id = user_id()
     db.session.add(question)

@@ -185,5 +185,11 @@ $(function () {
         }
     }
 
+    function init_select2() {
+        $(".tag-input").select2({
+            tags:[]
+        });
+    };
+    init_select2();
 
 });
