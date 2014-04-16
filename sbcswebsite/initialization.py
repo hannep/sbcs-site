@@ -16,6 +16,7 @@ def initialize(directory):
                 APP_SECRET = {0}
                 SQLALCHEMY_DATABASE_URI = "sqlite:///{1}"
                 FACEBOOK_APP_ID = "FACEBOOK_APP_ID here"
+                FACEBOOK_APP_SECRET = "FACEBOOK_APP_SECRET here"
                 SBCS_GROUP_ID = 1 # GROUP ID HERE
                 """.format(repr(os.urandom(40)), os.path.join(directory, "test.db"))))
     wsgi_file = os.path.join(directory, 'application.wsgi')
@@ -39,9 +40,6 @@ def initialize(directory):
     media_dir = os.path.join(directory, "media")
     if not os.path.exists(media_dir):
         os.mkdir(media_dir)
-    static_dir = os.path.join(directory, "static")
-    if not os.path.exists(static_dir):
-        os.symlink(os.path.join(package_dir, "static"), static_dir)
 
 
 
