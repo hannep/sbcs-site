@@ -8,18 +8,14 @@ import subprocess
 import os, sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-import sbcswebsite.initialization as initlib
-
-from sbcswebsite.application import app
-from sbcswebsite.models import db
-
-
 @task
 def initialize():
+    import sbcswebsite.initialization as initlib
     initlib.initialize(os.getcwd())
 
 @task
 def init_db():
+    from sbcswebsite.models import db
     db.create_all()
 
 @task
