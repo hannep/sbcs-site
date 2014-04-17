@@ -1,8 +1,8 @@
 from application import app
 from flask import Flask, request, session
 from flask import render_template, redirect, url_for
-from flask.ext.login import login_required, current_user, logout_user
-from sbcswebsite.models import Announcement, JobPost, BlogPost, Question, Answer, Tag, db
+from flask.ext.login import login_user
+from sbcswebsite.models import Announcement, JobPost, BlogPost, Question, Answer, Tag, User, db
 from base64 import urlsafe_b64encode as b64encode, urlsafe_b64decode as b64decode
 import requests
 import os
@@ -28,6 +28,18 @@ def news():
 def jobs(): 
     job_post_list = JobPost.query.order_by(JobPost.id.desc()).limit(10).all() 
     return render_template("jobs.html", job_posts=job_post_list)
+
+@app.route("/jobs/edit")
+@app.route("/jobs/edit/<job_id>")
+def edit_job(job_id = None): 
+    job_post_list = JobPost.query.order_by(JobPost.id.desc()).limit(10).all() 
+    return render_template("job-edit.html", job_posts=job_post_list)
+
+@app.route("/jobs/post", methods=["POST"])
+def post_job():
+    job = Job()
+    return "hi"
+
 
 @app.route("/blog")
 def blog(): 
@@ -109,11 +121,17 @@ def finish_login():
     print group_ids
     if app.config["SBCS_GROUP_ID"] not in group_ids:
         return "Not in facebook group", 400
-
-    session["fb_access_token"] = access_token
-    session["fb_token_expires"] = parsed_response["expires"][0]
-
+    
     me = graph.get_object("me")
-    session["fb_id"] = int(me[u"id"])
+    facebook_id = int(me[u"id"])
+    user = User.query.filter(User.facebook_user_id == facebook_id).scalar()
+    if user == None:
+        user = User()
+        user.facebook_user_id = facebook_id
+        user.name = me[u"name"]
+        db.session.add(user)
+        db.session.commit()
+
+    login_user(user)
     return redirect(url_for("ask"))
 
