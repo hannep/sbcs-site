@@ -10,7 +10,7 @@ import flask_wtf
 
 class HiddenAdminView(AdminIndexView):
     def is_accessible(self):
-        return current_user.is_administrator()
+        return current_user.is_authenticated() and current_user.is_administrator()
 
 
 class CsrfModelView(ModelView):
