@@ -4,8 +4,6 @@ from flask.ext.login import LoginManager, current_user
 from functools import wraps
 login_manager = LoginManager(app)
 
-login_manager.anonymous_user = User
-
 @login_manager.user_loader
 def load_user(userid):
     return User.query.get(userid)
