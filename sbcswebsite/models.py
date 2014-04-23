@@ -11,6 +11,11 @@ class User(db.Model, UserMixin):
     facebook_user_id = db.Column(db.BigInteger, unique=True)
     name = db.Column(db.String(100))
     is_admin = db.Column(db.Boolean, nullable=False, default=False)
+    def is_administrator(self):
+        return self.is_admin
+
+    def __str__(self):
+        return self.name
 
 class Announcement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,8 +25,7 @@ class Announcement(db.Model):
     def __repr__(self):
         return '<Announcement %r>' % self.title
 
-class BlogPost(db.Model):
-    __tablename__ = "blog_post"
+class NewsPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     content_html = db.Column(db.Text)
@@ -52,6 +56,9 @@ class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String(40))
 
+    def __str__(self):
+        return self.tag
+
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -72,7 +79,7 @@ class Question(db.Model):
                 lazy="subquery"
         )
 
-    def __repr(self):
+    def __repr__(self):
         return '<Question %r>' % self.title
 
 class Answer(db.Model):
@@ -85,5 +92,8 @@ class Answer(db.Model):
                 lazy="subquery"
         )
 
-    def __repr(self):
-        return '<Answer %r>' % id
+    def __str__(self):
+        return "Answer {}: {}".format(self.id, self.content[:20])
+
+    def __repr__(self):
+        return '<Answer %r>' % self.id
