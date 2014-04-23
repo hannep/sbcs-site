@@ -4,6 +4,5 @@ from sbcswebsite.application import app as application
 import sbcswebsite.models
 import sbcswebsite.users
 import sbcswebsite.views
-import sbcswebsite.facebooktools
 import sbcswebsite.admin
 import sbcswebsite.forms
