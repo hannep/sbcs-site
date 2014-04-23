@@ -33,8 +33,6 @@ def jobs():
 def ask(): 
     questions = Question.query.order_by(Question.touched_date.desc()).limit(10).all()
     answers = Answer.query.limit(10).all()
-    return str(answers[0].user) + str()
-
     return render_template("ask.html", questions=questions)
 
 @app.route("/post_question", methods=["POST"])
