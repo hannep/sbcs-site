@@ -2,7 +2,7 @@ from application import app
 from flask import Flask, request, session
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_user, login_required, current_user
-from sbcswebsite.models import Announcement, JobPost, NewsPost, Question, Answer, Tag, User, db
+from sbcswebsite.models import Announcement, JobPost, NewsPost, Question, Answer, Tag, User, db, question_tag_table
 from base64 import urlsafe_b64encode as b64encode, urlsafe_b64decode as b64decode
 import requests
 import os
@@ -31,7 +31,7 @@ def jobs():
 
 @app.route("/ask/tags/<tag>")
 def ask_tag(tag):
-    questions = Question.query.order_by(Question.touched_date.desc()).limit(10).all()
+    questions = Question.query.join(question_tag_table).join(Tag).filter(Tag.tag == tag).order_by(Question.touched_date.desc()).limit(10).all()
     return render_template("ask.html", questions=questions, can_ask=False)
 
 @app.route("/ask")
