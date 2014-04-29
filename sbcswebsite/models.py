@@ -54,7 +54,7 @@ job_post_tag_table = db.Table('job_post_tag', db.metadata,
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tag = db.Column(db.String(40))
+    tag = db.Column(db.String(40), unique=True)
 
     def __str__(self):
         return self.tag

@@ -29,11 +29,22 @@ def jobs():
     job_post_list = JobPost.query.order_by(JobPost.id.desc()).limit(10).all() 
     return render_template("jobs.html", job_posts=job_post_list)
 
+@app.route("/ask/tags/<tag>")
+def ask_tag(tag):
+    questions = Question.query.order_by(Question.touched_date.desc()).limit(10).all()
+    return render_template("ask.html", questions=questions, can_ask=False)
+
 @app.route("/ask")
 def ask(): 
     questions = Question.query.order_by(Question.touched_date.desc()).limit(10).all()
-    answers = Answer.query.limit(10).all()
-    return render_template("ask.html", questions=questions)
+    return render_template("ask.html", questions=questions, can_ask=True)
+
+def _get_tags_for_request():
+    request_tags = request.form.get("tags").split(",")
+    db_tags = Tag.query.filter(Tag.tag.in_(request_tags)).all()
+    db_tag_words = set([tag.tag for tag in db_tags])
+    new_tags = [Tag(tag=tag) for tag in request_tags if tag not in db_tag_words]
+    return db_tags + new_tags
 
 @app.route("/post_question", methods=["POST"])
 @login_required
@@ -41,7 +52,7 @@ def post_question():
     question = Question()
     question.title = request.form.get("title")
     question.content = request.form.get("content")
-    question.tags = [Tag(tag=tag) for tag in request.form.get("tags").split(",")]
+    question.tags = _get_tags_for_request()
     question.touched_date = datetime.utcnow()
     question.user_id = current_user.id
     db.session.add(question)
@@ -57,7 +68,7 @@ def post_answer():
     answer.content = request.form.get("content")
     answer.question_id = question.id
     question.touched_date = datetime.utcnow()
-    question.tags = question.tags + [Tag(tag=tag) for tag in request.form.get("tags").split(",") if tag not in question.tags]
+    question.tags = _get_tags_for_request()
     db.session.add(question)
     db.session.add(answer)
     db.session.commit()
