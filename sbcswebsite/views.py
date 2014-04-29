@@ -53,10 +53,11 @@ def post_question():
 def post_answer():
     question = Question.query.get(request.form.get("question_id"))
     answer = Answer()
-    answer.facebook_user_id = current_user.id
+    answer.user_id = current_user.id
     answer.content = request.form.get("content")
     answer.question_id = question.id
     question.touched_date = datetime.utcnow()
+    question.tags = question.tags + [Tag(tag=tag) for tag in request.form.get("tags").split(",") if tag not in question.tags]
     db.session.add(question)
     db.session.add(answer)
     db.session.commit()

@@ -649,11 +649,15 @@ footer.main-footer {
 #main-content {
   min-height: calc(100% - 20px);
 }
-.question-form .tag-input {
+.question-form .tag-input,
+.answer-form .tag-input {
   min-width: 200px;
 }
 .question-tag {
   display: inline-block;
   background-color: #CCCCFF;
   padding: 2px;
+}
+.form-item {
+  display: block;
 }
