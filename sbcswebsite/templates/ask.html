@@ -8,14 +8,14 @@
     <div class="form-row clearfix">
       <label class="form-label" for="title">Title: </label><input name="title">
     </div>
+    <div class="form-row">
+        <label class="form-label" for="content">Question:</label>
+        <textarea name="content"></textarea>
+    </div>
     <div class="form-row clearfix">
       <label class="form-label" for="tags">Tags: </label>
       <input type="hidden" class="tag-input" name="tags">
     </div>
-    <label>
-        <div>Question</div>
-        <textarea name="content"></textarea>
-    </label>
     
     <div class="form-row">
       <input type="submit" value="Post Question">
@@ -52,14 +52,14 @@
         </article>
         {% endfor %}
         <form class="answer-form" action="{{url_for("post_answer")}}" method="POST">
+        <div class="form-row">
+          <label class="form-label" for="content">Answer:</label>
+          <textarea name="content"></textarea>
+        </div>
         <div class="form-row clearfix">
           <label class="form-label" for="tags">Tags: </label>
         <input type="hidden" class="tag-input" name="tags">
         </div>
-        <label>
-          <div>Answer</div>
-          <textarea name="content"></textarea>
-        </label>
         <div class="form-row"><input type="submit" value="Post Answer"></div>
         <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
         <input type="hidden" name="question_id" value="{{question.id}}">
