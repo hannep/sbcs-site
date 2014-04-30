@@ -634,6 +634,7 @@ body {
   display: flex;
 }
 .article-container .article-content {
+  margin-right: 50px;
   flex-grow: 1;
 }
 .article-container .article-content article {
