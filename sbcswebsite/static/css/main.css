@@ -647,6 +647,7 @@ body {
 }
 .article-container .article-sidebar {
   width: 350px;
+  margin-top: 35px;
 }
 footer.main-footer {
   text-align: center;
