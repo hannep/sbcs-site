@@ -630,16 +630,22 @@ body {
 .form-label {
   display: block;
 }
-.article-content {
-  margin-right: 400px;
+.article-container {
+  display: flex;
 }
-.article-content article {
+.article-container .article-content {
+  flex-grow: 1;
+}
+.article-container .article-content article {
   background-color: #e2e2e2;
   padding: 20px;
   margin: 40px 0;
 }
-.article-content article > .title {
+.article-container .article-content article > .title {
   margin-top: 10px;
+}
+.article-container .article-sidebar {
+  width: 350px;
 }
 footer.main-footer {
   text-align: center;
@@ -660,4 +666,12 @@ footer.main-footer {
 }
 .form-item {
   display: block;
+}
+.sidebar-tag {
+  display: block;
+  margin: 5px;
+  text-decoration: none;
+}
+.sidebar-tag:hover {
+  text-decoration: none;
 }

@@ -1,6 +1,6 @@
-{% extends "_base.html" %}
-{% block content %}
-
+{% extends "_articles.html" %}
+{% block articles %}
+    
 {% if can_ask %}
     <h1>Ask a question</h1>
     {% if current_user.is_authenticated() %}
@@ -19,43 +19,45 @@
     {% endif %}
 {% endif %}
 
-<div class="article-content">
+<div class="article-container">
+  <div class="article-content">
       
-{% for question in questions %}
-  <article class="question">
-    <img src="http://graph.facebook.com/{{question.user.facebook_user_id}}/picture">
-    <h2 class="question-title title">{{ question.title}}</h2>
-    <div>
-      {{ question.content }}
-    </div>
-    {% for tag in question.tags %}
-    <div class="question-tag">
-        {{tag.tag}}
-    </div>
-    {% endfor %}
-    {% for answer in question.answers %}
-    <article class="answer">
-        <img src="http://graph.facebook.com/{{answer.user.facebook_user_id}}/picture">
-
+    {% for question in questions %}
+      <article class="question">
+        <img src="http://graph.facebook.com/{{question.user.facebook_user_id}}/picture">
+        <h2 class="question-title title">{{ question.title}}</h2>
         <div>
-          {{ answer.content }}
+          {{ question.content }}
         </div>
-    </article>
+        {% for tag in question.tags %}
+        <a href="{{url_for("ask_tag", tag=tag)}}"class="question-tag">
+            {{tag.tag}}
+        </a>
+        {% endfor %}
+        {% for answer in question.answers %}
+        <article class="answer">
+            <img src="http://graph.facebook.com/{{answer.user.facebook_user_id}}/picture">
+
+            <div>
+              {{ answer.content }}
+            </div>
+        </article>
+        {% endfor %}
+        <form class="answer-form" action="{{url_for("post_answer")}}" method="POST">
+        <label>
+            <div>Answer</div>
+            <textarea name="content"></textarea>
+        </label>
+        <input type="hidden" class="tag-input" name="tags">
+        <input type="submit" value="Post Answer">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <input type="hidden" name="question_id" value="{{question.id}}">
+        </form>
+
+      </article>
     {% endfor %}
-    <form class="answer-form" action="{{url_for("post_answer")}}" method="POST">
-    <label>
-        <div>Answer</div>
-        <textarea name="content"></textarea>
-    </label>
-    <input type="hidden" class="tag-input" name="tags">
-    <input type="submit" value="Post Answer">
-    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
-    <input type="hidden" name="question_id" value="{{question.id}}">
-    </form>
 
-  </article>
-{% endfor %}
-
+  </div>
 </div>
 
 {% endblock %}

@@ -2,7 +2,7 @@ from application import app
 from flask import Flask, request, session
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_user, login_required, current_user
-from sbcswebsite.models import Announcement, JobPost, NewsPost, Question, Answer, Tag, User, db, question_tag_table
+from sbcswebsite.models import JobPost, NewsPost, Question, Answer, Tag, User, db, question_tag_table, job_post_tag_table, news_post_tag_table
 from base64 import urlsafe_b64encode as b64encode, urlsafe_b64decode as b64decode
 import requests
 import os
@@ -21,30 +21,62 @@ def calendar():
 
 @app.route("/news")
 def news(): 
-    newsletter_list = Announcement.query.order_by(Announcement.id.desc()).limit(10).all() 
-    return render_template("news.html", newsletter=newsletter_list)
+    newsletter_list = NewsPost.query.order_by(NewsPost.id.desc()).limit(10).all() 
+    tags = _tags_for_type(NewsPost, news_post_tag_table, "news_post_tag")
+    return render_template("news.html", newsletter=newsletter_list, tags=tags)
+
+@app.route("/news/tags/<tag>")
+def news_post_tag(tag):
+    news_posts = JobPost.query.join(job_post_tag_table).join(Tag).filter(Tag.tag == tag).order_by(JobPost.id.desc()).limitI(10).all()
+    tags = _tags_for_type(NewsPost, news_post_tag_table, "news_post_tag")
+    return render_template("news.html", newsletter=news_posts, tags=tags)
+
+def _tag_from_cols(tup, tag_route):
+    id, name, frequency = tup
+    tag = Tag()
+    tag.id = id
+    tag.tag = name
+    tag.frequency = frequency
+    print name
+    tag.url = url_for(tag_route, tag=name)
+    return tag
+
+def _tags_for_type(table, join_table, tag_route):
+    tags_with_frequency = db.session.query(Tag.id, Tag.tag, db.func.count(Tag.id)).join(join_table).join(table).group_by(Tag.id).all()
+    return [_tag_from_cols(tup, tag_route) for tup in tags_with_frequency if tup[2] > 0]
 
 @app.route("/jobs")
 def jobs(): 
     job_post_list = JobPost.query.order_by(JobPost.id.desc()).limit(10).all() 
-    return render_template("jobs.html", job_posts=job_post_list)
+    tags = _tags_for_type(JobPost, job_post_tag_table, "job_post_tag")
+    return render_template("jobs.html", job_posts=job_post_list, tags=tags)
+
+@app.route("/jobs/tags/<tag>")
+def job_post_tag(tag):
+    job_posts = JobPost.query.join(job_post_tag_table).join(Tag).filter(Tag.tag == tag).order_by(JobPost.id.desc()).limit(10).all()
+    tags = _tags_for_type(JobPost, job_post_tag_table, "job_post_tag")
+    return render_template("jobs.html", job_posts=job_posts, tags=tags)
 
 @app.route("/ask/tags/<tag>")
 def ask_tag(tag):
     questions = Question.query.join(question_tag_table).join(Tag).filter(Tag.tag == tag).order_by(Question.touched_date.desc()).limit(10).all()
-    return render_template("ask.html", questions=questions, can_ask=False)
+    tags = _tags_for_type(Question, question_tag_table, "ask_tag")
+    return render_template("ask.html", questions=questions, can_ask=False, tags=tags)
 
 @app.route("/ask")
 def ask(): 
     questions = Question.query.order_by(Question.touched_date.desc()).limit(10).all()
-    return render_template("ask.html", questions=questions, can_ask=True)
+    tags = _tags_for_type(Question, question_tag_table, "ask_tag")
+    return render_template("ask.html", questions=questions, can_ask=True, tags=tags)
 
-def _get_tags_for_request():
+def _get_tags_for_request(existing_tags = None):
+    existing_tags = existing_tags or []
     request_tags = request.form.get("tags").split(",")
     db_tags = Tag.query.filter(Tag.tag.in_(request_tags)).all()
-    db_tag_words = set([tag.tag for tag in db_tags])
-    new_tags = [Tag(tag=tag) for tag in request_tags if tag not in db_tag_words]
-    return db_tags + new_tags
+    old_tags = db_tags + existing_tags
+    old_tag_words = set([tag.tag for tag in old_tags])
+    new_tags = [Tag(tag=tag) for tag in request_tags if tag not in old_tag_words]
+    return old_tags + new_tags
 
 @app.route("/post_question", methods=["POST"])
 @login_required
@@ -68,7 +100,7 @@ def post_answer():
     answer.content = request.form.get("content")
     answer.question_id = question.id
     question.touched_date = datetime.utcnow()
-    question.tags = _get_tags_for_request()
+    question.tags = _get_tags_for_request(question.tags)
     db.session.add(question)
     db.session.add(answer)
     db.session.commit()
