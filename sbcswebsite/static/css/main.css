@@ -668,8 +668,7 @@ footer.main-footer {
 }
 #main-collage {
   background-image: url('../images/collage.jpg');
-  background-position: center center;
-  height: 1500px;
+  height: 1300px;
 }
 .form-row {
   margin: 5px 0;

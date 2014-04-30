@@ -27,7 +27,7 @@ def news():
 
 @app.route("/news/tags/<tag>")
 def news_post_tag(tag):
-    news_posts = JobPost.query.join(job_post_tag_table).join(Tag).filter(Tag.tag == tag).order_by(JobPost.id.desc()).limitI(10).all()
+    news_posts = NewsPost.query.join(news_post_tag_table).join(Tag).filter(Tag.tag == tag).order_by(NewsPost.id.desc()).limit(10).all()
     tags = _tags_for_type(NewsPost, news_post_tag_table, "news_post_tag")
     return render_template("news.html", news_posts=news_posts, tags=tags)
 
