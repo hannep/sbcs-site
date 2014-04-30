@@ -37,7 +37,7 @@ $(function () {
           var options = { errorClass: 'mce_inline_error', errorElement: 'div', onkeyup: function(){}, onfocusout:function(){}, onblur:function(){}  };
           var mce_validator = $("#mc-embedded-subscribe-form").validate(options);
           $("#mc-embedded-subscribe-form").unbind('submit');//remove the validator so we can get into beforeSubmit on the ajaxform, which then calls the validator
-          options = { url: 'http://facebook.us2.list-manage.com/subscribe/post-json?u=cabec1fda53141c479ff5f058&id=26aa995d9e&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
+          options = { url: 'https://facebook.us2.list-manage.com/subscribe/post-json?u=cabec1fda53141c479ff5f058&id=26aa995d9e&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
                         beforeSubmit: function(){
                             $('#mce_tmp_error_msg').remove();
                             $('.datefield','#mc_embed_signup').each(
