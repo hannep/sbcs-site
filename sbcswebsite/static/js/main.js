@@ -32,29 +32,6 @@ $(function () {
     }
     head.appendChild(style);
 
-    var mce_preload_checks = 0;
-    function mce_preload_check(){
-        if (mce_preload_checks>40) return;
-        mce_preload_checks++;
-        try {
-            var jqueryLoaded=jQuery;
-        } catch(err) {
-            setTimeout('mce_preload_check();', 250);
-            return;
-        }
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'http://downloads.mailchimp.com/js/jquery.form-n-validate.js';
-        head.appendChild(script);
-        try {
-            var validatorLoaded=jQuery("#fake-form").validate({});
-        } catch(err) {
-            setTimeout(mce_preload_check, 250);
-            return;
-        }
-        mce_init_form();
-    }
-    setTimeout(mce_preload_check, 250);
     function mce_init_form(){
         jQuery(document).ready( function($) {
           var options = { errorClass: 'mce_inline_error', errorElement: 'div', onkeyup: function(){}, onfocusout:function(){}, onblur:function(){}  };
@@ -191,5 +168,6 @@ $(function () {
         });
     };
     init_select2();
+    mce_init_form();
 
 });
