@@ -29,6 +29,6 @@ def build():
     pass
 
 @task
-@needs("build")
+@needs(["build", "initialize", "init_db"])
 def init_site():
-    initialize(os.getcwd())
+    pass

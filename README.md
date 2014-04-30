@@ -8,8 +8,7 @@ You should install paver, then run the following:
 
 ```
 pip install -r requirements.txt
-paver initialize
-paver init_db
+paver init_site
 python debug.py
 ```
 ## To Do
