@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+{% block content %}
+<div class="article-container">
+  <div class="article-content">  
+    {% block articles %}  
+    {% endblock %}
+  </div>
+  <div class="article-sidebar">
+    <h5>Tags</h5>
+    {% for tag in tags %}
+      <a href="{{tag.url}}" class="sidebar-tag">
+        {{tag.tag}}: ({{tag.frequency}})
+      </a>
+    {% endfor %}
+    {% block sidebar %}
+    {% endblock %}
+  </div>
+</div>
+
+{% endblock %}

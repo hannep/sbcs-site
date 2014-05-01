@@ -32,35 +32,12 @@ $(function () {
     }
     head.appendChild(style);
 
-    var mce_preload_checks = 0;
-    function mce_preload_check(){
-        if (mce_preload_checks>40) return;
-        mce_preload_checks++;
-        try {
-            var jqueryLoaded=jQuery;
-        } catch(err) {
-            setTimeout('mce_preload_check();', 250);
-            return;
-        }
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'http://downloads.mailchimp.com/js/jquery.form-n-validate.js';
-        head.appendChild(script);
-        try {
-            var validatorLoaded=jQuery("#fake-form").validate({});
-        } catch(err) {
-            setTimeout(mce_preload_check, 250);
-            return;
-        }
-        mce_init_form();
-    }
-    setTimeout(mce_preload_check, 250);
     function mce_init_form(){
         jQuery(document).ready( function($) {
           var options = { errorClass: 'mce_inline_error', errorElement: 'div', onkeyup: function(){}, onfocusout:function(){}, onblur:function(){}  };
           var mce_validator = $("#mc-embedded-subscribe-form").validate(options);
           $("#mc-embedded-subscribe-form").unbind('submit');//remove the validator so we can get into beforeSubmit on the ajaxform, which then calls the validator
-          options = { url: 'http://facebook.us2.list-manage.com/subscribe/post-json?u=cabec1fda53141c479ff5f058&id=26aa995d9e&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
+          options = { url: 'https://facebook.us2.list-manage.com/subscribe/post-json?u=cabec1fda53141c479ff5f058&id=26aa995d9e&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
                         beforeSubmit: function(){
                             $('#mce_tmp_error_msg').remove();
                             $('.datefield','#mc_embed_signup').each(
@@ -185,5 +162,12 @@ $(function () {
         }
     }
 
+    function init_select2() {
+        $(".tag-input").select2({
+            tags:[]
+        });
+    };
+    init_select2();
+    mce_init_form();
 
 });

@@ -27,24 +27,24 @@
       <div class="container">
         <div class="navbar-header">
           <a class="navbar-brand" href=".">
-            <img class="navbar-img" src="static/images/tinylogo.png">  
+            <img class="navbar-img" src="{{ url_for('static', filename='images/tinylogo.png') }}">  
             SBCS
           </a>
         </div>
         <div class="collapse navbar-collapse" id="collapsing-nav-links">
           <ul class="nav navbar-nav">
           <li>
-            <a href="calendar">Calendar</a>
+            <a href="{{url_for("calendar")}}">Calendar</a>
           </li>
           <li>
-            <a href="newsletter">Newsletter</a>
+            <a href="{{url_for("news")}}">News</a>
           </li>
           <li>
-            <a href="jobs">Job Board</a>
+            <a href="{{url_for("jobs")}}">Job Board</a>
           </li>
           <li>
-            <a href="blog">Blog</a>
-          </li> 
+            <a href="{{url_for("ask")}}">Q&amp;A</a>
+          </li>
         </ul>
           <div class="navbar-right navbar-form-container">
             <form class="navbar-form navbar-right" id="mailchimp-signup">
@@ -58,14 +58,21 @@
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="main-content">
+    {% block main_container %}
+    <div id="main-content" class="container">
+      
         {% block content %} {% endblock %}
-      </div>
+
     </div>
+    {% endblock %}
+    <footer class="main-footer">
+      &copy; 2014. Stony Brook Computing Society.
+    </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/jquery.form-n-validate.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/select2.js') }}"></script>
     <script src="{{ url_for('static', filename='js/fullcalendar.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/gcal.js') }}"></script> 

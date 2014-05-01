@@ -1,0 +1,9 @@
+{% extends "_base.html" %}
+{% block content %}
+<form class="post_form" action="{{post_url}}" method="POST">
+    {{ form.title.label }} {{ form.title }}
+    {{ form.content_html.label }} {{ form.content_html }}
+    {{ form.csrf_token }}
+<input type="submit" value="Post">
+</form>
+{% endblock %}

@@ -1,6 +1,5 @@
 {% extends "_base.html" %}
 {% block content %}
-  <h2>SBCS Event Calendar</h2>
   <div id="calendar-container">
     <div id="event-calendar">
     </div>
@@ -11,7 +10,8 @@
 
 $(document).ready(function() {
     $("#event-calendar").fullCalendar({
-        events: "https://www.google.com/calendar/feeds/sbcs.acm%40gmail.com/public/full/"
+        events: "https://www.google.com/calendar/feeds/sbcs.acm%40gmail.com/public/full/",
+        height: 500,
     });
 });
 

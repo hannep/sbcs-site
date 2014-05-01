@@ -1,0 +1,81 @@
+{% extends "_articles.html" %}
+{% block articles %}
+    
+{% if can_ask %}
+    <h1>Ask a question</h1>
+<p>We’ve noticed that the same types of questions keep popping up on our Facebook group: “Should I take 219 and 220 at the same time?” “What’s the homework like for 114?” “Can anyone recommend a great DEC J?” They always get great answers, but then get lost in the shuffle - and Facebook’s search really doesn’t cut it. This system will allow anyone to ask a question, get answers, and tag it so it can be found in the future. Remember, if you have a question that isn’t general knowledge, and won’t matter in a week or a year - use the group. </p>
+
+<p>Post these kinds of questions here: “How important is CSE 305?” “Can I use AP credits for the natural science requirements?” “Could someone recommend a good resource for learning Python on my own?” </p>
+
+<p>Don’t post these here: “When’s the midterm in 312?” “Does anyone know how to solve problem 2 in the AMS 110 homework? “Who else going to the guest lecture today?” “I’m trying to do this thing, but get this error. Help?” </p>
+
+<p>Remember to tag your questions carefully! Tags for the first example question might be CSEMajor, CSE305, DegreeRequirements. And as always, keep your posts respectful and on-topic. </p>
+    {% if current_user.is_authenticated() %}
+    <form class="question-form" action="{{url_for("post_question")}}" method="POST">
+    <div class="form-row clearfix">
+      <label class="form-label" for="title">Title: </label><input name="title">
+    </div>
+    <div class="form-row">
+        <label class="form-label" for="content">Question:</label>
+        <textarea name="content"></textarea>
+    </div>
+    <div class="form-row clearfix">
+      <label class="form-label" for="tags">Tags: </label>
+      <input type="hidden" class="tag-input" name="tags">
+    </div>
+    
+    <div class="form-row">
+      <input type="submit" value="Post Question">
+    </div>
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+    </form>
+    {% else %}
+    <a href="{{url_for("login")}}">Login with Facebook</a>
+    {% endif %}
+{% endif %}
+
+<div class="article-container">
+  <div class="article-content">
+      
+    {% for question in questions %}
+      <article class="question">
+        <img src="https://graph.facebook.com/{{question.user.facebook_user_id}}/picture">
+        <h2 class="question-title title">{{ question.title}}</h2>
+        <div>
+          {{ question.content }}
+        </div>
+        {% for tag in question.tags %}
+        <a href="{{url_for("ask_tag", tag=tag)}}"class="question-tag">
+            {{tag.tag}}
+        </a>
+        {% endfor %}
+        {% for answer in question.answers %}
+        <article class="answer">
+            <img src="http://graph.facebook.com/{{answer.user.facebook_user_id}}/picture">
+
+            <div>
+              {{ answer.content }}
+            </div>
+        </article>
+        {% endfor %}
+        <form class="answer-form" action="{{url_for("post_answer")}}" method="POST">
+        <div class="form-row">
+          <label class="form-label" for="content">Answer:</label>
+          <textarea name="content"></textarea>
+        </div>
+        <div class="form-row clearfix">
+          <label class="form-label" for="tags">Tags: </label>
+        <input type="hidden" class="tag-input" name="tags">
+        </div>
+        <div class="form-row"><input type="submit" value="Post Answer"></div>
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+        <input type="hidden" name="question_id" value="{{question.id}}">
+        </form>
+
+      </article>
+    {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}

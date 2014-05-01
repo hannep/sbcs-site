@@ -5,7 +5,7 @@ sbcs_settings.py
 *.pyc
 *.egg-info
 test.db
-static
+static/css/*.less
 sbcswebsite_config.py
 application.wsgi
 debug.py

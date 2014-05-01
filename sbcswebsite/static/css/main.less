@@ -1,29 +1,17 @@
+@import (less) "select2.css";
+
 body {
     padding-top: 50px;
-    padding-bottom: 50px;
+}
+
+html, body {
+    height: 100%;
 }
 
 .navbar-brand > .navbar-img {
     margin-top: -15px;
     margin-bottom: -10px;
     margin-right: 5px;
-}
-
-.jumbotron.sbcs-jumbotron {
-    background-image: url('../images/mhacks.jpg');
-    background-position-y: -50px;
-    background-size: 100%;
-    min-height: 600px;
-    color: #eee;
-    text-shadow:
-        -1px -1px 1px #333,
-        1px -1px 1px #333,
-        -1px 1px 1px #333,
-        1px 1px 1px #333;
-}
-
-.jumbotron .jumbotron-header {
-    font-size: 45px;
 }
 
 .navbar-form-container {
@@ -78,7 +66,7 @@ body {
 }
 
 #calendar-container {
-  padding: 2em;
+  padding-top: 2em;
 }
 
 .container.schedule {
@@ -93,16 +81,78 @@ body {
     display: block;
 }
 
-.main-content {
-    margin-right: 400px;
+@light-gray: #E2E2E2;
+@navbar-color: #101010;
+@navbar-text: #999;
+
+.article-container {
+    display: flex;
+    .article-content {
+        margin-right: 50px;
+        flex-grow: 1;
+        article {
+            background-color: @light-gray;
+            padding: 20px;
+            margin: 40px 0;
+        }
+
+        article > .title {
+            margin-top: 10px;
+        }
+    }
+
+    .article-sidebar {
+        width:350px;
+        margin-top: 35px;
+    }
 }
 
-.main-content article {
-    background-color: #E2E2E2;
-    padding: 20px;
-    margin: 40px 0;
+
+footer.main-footer {
+    text-align: center;
+    background-color: @navbar-color;
+    color: @navbar-text;
 }
 
-.main-content article > .title {
-    margin-top: 10px;
+#main-content {
+    min-height: calc(~"100% - 20px");
+}
+
+.question-form,.answer-form{
+    .tag-input {
+        min-width: 200px;
+    }
+}
+
+.question-tag {
+    display: inline-block;
+    background-color: #CCCCFF;
+    padding: 2px;
+}
+
+.form-item {
+    display: block;
+}
+
+.sidebar-tag {
+    display: block;
+    margin: 5px;
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+#main-collage {
+    background-image: url('../images/collage.jpg');
+    height:1300px;
+}
+
+.form-row {
+    margin: 5px 0;
+}
+
+.form-label {
+    float: left;
+    width: 80px;
 }
