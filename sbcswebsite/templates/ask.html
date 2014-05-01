@@ -39,7 +39,7 @@
       
     {% for question in questions %}
       <article class="question">
-        <img src="http://graph.facebook.com/{{question.user.facebook_user_id}}/picture">
+        <img src="https://graph.facebook.com/{{question.user.facebook_user_id}}/picture">
         <h2 class="question-title title">{{ question.title}}</h2>
         <div>
           {{ question.content }}
