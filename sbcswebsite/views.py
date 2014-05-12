@@ -11,6 +11,8 @@ import facebook
 from sbcswebsite.users import admin_required
 from datetime import datetime
 
+import datetime, time
+
 @app.route("/")
 def index(): 
     return render_template("index.html")
@@ -185,21 +187,27 @@ def fb_complete():
     code = request.args.get('code')
 
     base_url = "https://graph.facebook.com/oauth/access_token"
-    url = "{base}?client_id={app_id}&redirect_uri={redirect_uri}&client_secret={app_secret}&code={code}&scope={scope}".format(
+    token_url = "{base}?client_id={app_id}&redirect_uri={redirect_uri}&client_secret={app_secret}&code={code}&scope={scope}".format(
         base = base_url,
         app_id = app.config["FACEBOOK_APP_ID"],
         app_secret = app.config["FACEBOOK_APP_SECRET"],
-        redirect_uri = url_for("fb-complete", _external=True),
+        redirect_uri = url_for("fb_complete", _external=True),
         code = code,
         scope = "user_groups"
     )
-    response = requests.get(url)
+    response = requests.get(token_url)
     data = urlparse.parse_qs(response.text)
     if not data:
         return "Invalid login", 400
     access_token = data["access_token"][0]
     print "Token: "+access_token
-    response = requests.get("{}?grant_type=fb_exchange_token&client_id={}&client_secret={}&fb_exchange_token={}".format(OAUTH_TOKEN_API, secrets.APP_ID, secrets.APP_SECRET, access_token))
+    long_term_url = "{base}?grant_type=fb_exchange_token&client_id={app_id}&client_secret={app_secret}&fb_exchange_token={fb_exchange_token}".format(
+        base = base_url,
+        app_id = app.config["FACEBOOK_APP_ID"],
+        app_secret = app.config["FACEBOOK_APP_SECRET"],
+        fb_exchange_token = access_token
+    )
+    response = requests.get(long_term_url)
     data = urlparse.parse_qs(response.text)
     if not data:
         return redirect('/error?'+response.text)
