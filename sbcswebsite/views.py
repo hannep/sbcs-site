@@ -162,3 +162,49 @@ def finish_login():
     login_user(user)
     return redirect(url_for("ask"))
 
+@app.route("/fb")
+def fb_index():
+    return render_template("fb-index.html")
+
+@app.route("/fb-login")
+def fb_login():
+    redirect_url = url_for('fb_complete', _external=True)
+    oauth_state = b64encode(os.urandom(32))
+    return redirect(
+        "https://www.facebook.com/dialog/oauth?client_id={app_id}&redirect_uri={redirect_uri}&state={state}&scope={scope}"
+        .format(
+            app_id = app.config["FACEBOOK_APP_ID"],
+            redirect_uri = redirect_url,
+            state=oauth_state,
+            scope="user_groups"
+        )
+    )
+
+@app.route("/fb-complete")
+def fb_complete():
+    code = request.args.get('code')
+
+    base_url = "https://graph.facebook.com/oauth/access_token"
+    url = "{base}?client_id={app_id}&redirect_uri={redirect_uri}&client_secret={app_secret}&code={code}&scope={scope}".format(
+        base = base_url,
+        app_id = app.config["FACEBOOK_APP_ID"],
+        app_secret = app.config["FACEBOOK_APP_SECRET"],
+        redirect_uri = url_for("fb-complete", _external=True),
+        code = code,
+        scope = "user_groups"
+    )
+    response = requests.get(url)
+    data = urlparse.parse_qs(response.text)
+    if not data:
+        return "Invalid login", 400
+    access_token = data["access_token"][0]
+    print "Token: "+access_token
+    response = requests.get("{}?grant_type=fb_exchange_token&client_id={}&client_secret={}&fb_exchange_token={}".format(OAUTH_TOKEN_API, secrets.APP_ID, secrets.APP_SECRET, access_token))
+    data = urlparse.parse_qs(response.text)
+    if not data:
+        return redirect('/error?'+response.text)
+    access_token = data["access_token"][0]
+    expires = int(data["expires"][0])
+    now = time.mktime(datetime.datetime.now().timetuple())
+    expiration_date = datetime.datetime.fromtimestamp(expires+now)
+    return render_template("fb-complete.html",token = access_token, expires = expiration_date)
