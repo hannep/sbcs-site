@@ -2,7 +2,7 @@ from application import app
 from flask import Flask, request, session
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_user, login_required, current_user
-from sbcswebsite.models import JobPost, NewsPost, Question, Answer, Tag, User, db, question_tag_table, job_post_tag_table, news_post_tag_table
+from sbcswebsite.models import JobPost, NewsPost, Question, Answer, Tag, User, Token, db, question_tag_table, job_post_tag_table, news_post_tag_table
 from base64 import urlsafe_b64encode as b64encode, urlsafe_b64decode as b64decode
 import requests
 import os
@@ -12,10 +12,16 @@ from sbcswebsite.users import admin_required
 from datetime import datetime
 
 import datetime, time
+#Eric's todo:
+#Add db functionality on index
+#Check to see if expiration date is storing correctly
+#Truncate db on insert
 
 @app.route("/")
-def index(): 
-    return render_template("index.html")
+def index():
+    graph = facebook.GraphAPI("CAAKrakDDZCL8BABpZCjRx51wa0OSNDXyjChMJ8oo6fTZB9VXwHYRu8oqiIMExX0oZCZA0p56ziDmK4K3oJquq1gvqXkZCykQdiyynhXaquB4ZBaYdbhzc1BwSLS4LZCDL31PZBMrLn8gyIZC4M5zYko7LYFZCC5hZCIZB7kZAe5FM0FDWGizKjOoWwbbuxvjNkFnJn5VwZD")
+    feed = graph.get_object("180130720983/feed") 
+    return render_template("index.html",feed=feed)
 
 @app.route("/calendar")
 def calendar(): 
@@ -213,6 +219,13 @@ def fb_complete():
         return redirect('/error?'+response.text)
     access_token = data["access_token"][0]
     expires = int(data["expires"][0])
+    
+    token = Token()
+    token.access_token = access_token
+    token.expiration_date = datetime.datetime.fromordinal(expires/1000)
+    db.session.add(token)
+    db.session.commit()
+
     now = time.mktime(datetime.datetime.now().timetuple())
     expiration_date = datetime.datetime.fromtimestamp(expires+now)
     return render_template("fb-complete.html",token = access_token, expires = expiration_date)
