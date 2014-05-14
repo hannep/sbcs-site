@@ -3,7 +3,6 @@
   <div id="main-collage">
   </div>
   <div class="container">
-	Hiya!
    {% for post in feed.data  %}
         <a href="https://www.facebook.com/profile.php?id={{post.from.id}}">{{post.from.name}}</a>: {{post.message}}
         {% if post.likes %}
