@@ -11,7 +11,7 @@ import facebook
 from sbcswebsite.users import admin_required
 from datetime import datetime
 
-import datetime, time
+import time
 #Eric's todo:
 #Check to see if expiration date is storing correctly
 #Clean up weird image thing on index
@@ -227,10 +227,10 @@ def fb_complete():
     #Add the new token and it's expiration date.
     token = Token()
     token.access_token = access_token
-    token.expiration_date = datetime.datetime.fromordinal(expires/1000)
+    token.expiration_date = datetime.fromordinal(expires/1000)
     db.session.add(token)
     db.session.commit()
 
-    now = time.mktime(datetime.datetime.now().timetuple())
-    expiration_date = datetime.datetime.fromtimestamp(expires+now)
+    now = time.mktime(datetime.now().timetuple())
+    expiration_date = datetime.fromtimestamp(expires+now)
     return render_template("fb-complete.html",token = access_token, expires = expiration_date)
