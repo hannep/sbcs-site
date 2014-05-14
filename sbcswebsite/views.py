@@ -13,13 +13,14 @@ from datetime import datetime
 
 import datetime, time
 #Eric's todo:
-#Add db functionality on index
 #Check to see if expiration date is storing correctly
-#Truncate db on insert
+#Clean up weird image thing on index
+#What to do if there is no access_token in db?
 
 @app.route("/")
 def index():
-    graph = facebook.GraphAPI("CAAKrakDDZCL8BABpZCjRx51wa0OSNDXyjChMJ8oo6fTZB9VXwHYRu8oqiIMExX0oZCZA0p56ziDmK4K3oJquq1gvqXkZCykQdiyynhXaquB4ZBaYdbhzc1BwSLS4LZCDL31PZBMrLn8gyIZC4M5zYko7LYFZCC5hZCIZB7kZAe5FM0FDWGizKjOoWwbbuxvjNkFnJn5VwZD")
+    tokens = Token.query.limit(1).all()
+    graph = facebook.GraphAPI(tokens[0].access_token)
     feed = graph.get_object("180130720983/feed") 
     return render_template("index.html",feed=feed)
 
@@ -206,7 +207,7 @@ def fb_complete():
     if not data:
         return "Invalid login", 400
     access_token = data["access_token"][0]
-    print "Token: "+access_token
+    
     long_term_url = "{base}?grant_type=fb_exchange_token&client_id={app_id}&client_secret={app_secret}&fb_exchange_token={fb_exchange_token}".format(
         base = base_url,
         app_id = app.config["FACEBOOK_APP_ID"],
@@ -220,6 +221,10 @@ def fb_complete():
     access_token = data["access_token"][0]
     expires = int(data["expires"][0])
     
+    #Truncate that DB!  No sense in keeping all the old access tokens
+    Token.query.delete()
+
+    #Add the new token and it's expiration date.
     token = Token()
     token.access_token = access_token
     token.expiration_date = datetime.datetime.fromordinal(expires/1000)
