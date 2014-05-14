@@ -1,6 +1,6 @@
 from application import app
 from users import admin_required
-from models import db, JobPost, NewsPost, Question, Answer, Tag
+from models import db, JobPost, NewsPost, Question, Answer, Tag, Token
 
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.admin import Admin, AdminIndexView
@@ -24,3 +24,4 @@ admin.add_view(CsrfModelView(NewsPost, db.session))
 admin.add_view(CsrfModelView(Question, db.session))
 admin.add_view(CsrfModelView(Answer, db.session))
 admin.add_view(CsrfModelView(Tag, db.session))
+admin.add_view(CsrfModelView(Token, db.session))

@@ -220,6 +220,10 @@ def fb_complete():
         return redirect('/error?'+response.text)
     access_token = data["access_token"][0]
     expires = int(data["expires"][0])
+
+    #Given the number of seconds left until expiration, figure out the date and time
+    now = time.mktime(datetime.now().timetuple())
+    expiration_date = datetime.fromtimestamp(expires+now)
     
     #Truncate that DB!  No sense in keeping all the old access tokens
     Token.query.delete()
@@ -227,10 +231,8 @@ def fb_complete():
     #Add the new token and it's expiration date.
     token = Token()
     token.access_token = access_token
-    token.expiration_date = datetime.fromordinal(expires/1000)
+    token.expiration_date = expiration_date
     db.session.add(token)
     db.session.commit()
 
-    now = time.mktime(datetime.now().timetuple())
-    expiration_date = datetime.fromtimestamp(expires+now)
     return render_template("fb-complete.html",token = access_token, expires = expiration_date)
