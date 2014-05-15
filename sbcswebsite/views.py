@@ -13,7 +13,6 @@ from datetime import datetime
 
 import time
 #Eric's todo:
-#Check to see if expiration date is storing correctly
 #Clean up weird image thing on index
 #What to do if there is no access_token in db?
 
