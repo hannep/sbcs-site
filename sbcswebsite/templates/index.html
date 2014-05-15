@@ -1,8 +1,6 @@
 {% extends "_base.html" %}
 {% block main_container %}
   <div id="main-collage">
-  </div>
-  <div class="container">
    {% for post in feed.data  %}
         <a href="https://www.facebook.com/profile.php?id={{post.from.id}}">{{post.from.name}}</a>: {{post.message}}
         {% if post.likes %}
