@@ -13,7 +13,6 @@ from datetime import datetime
 
 import time
 #Eric's todo:
-#Clean up weird image thing on index
 #What to do if there is no access_token in db?
 
 @app.route("/")
@@ -174,20 +173,6 @@ def finish_login():
 def fb_index():
     return render_template("fb-index.html")
 
-@app.route("/fb-login")
-def fb_login():
-    redirect_url = url_for('fb_complete', _external=True)
-    oauth_state = b64encode(os.urandom(32))
-    return redirect(
-        "https://www.facebook.com/dialog/oauth?client_id={app_id}&redirect_uri={redirect_uri}&state={state}&scope={scope}"
-        .format(
-            app_id = app.config["FACEBOOK_APP_ID"],
-            redirect_uri = redirect_url,
-            state=oauth_state,
-            scope="user_groups"
-        )
-    )
-
 @app.route("/fb-complete")
 def fb_complete():
     code = request.args.get('code')
@@ -234,4 +219,4 @@ def fb_complete():
     db.session.add(token)
     db.session.commit()
 
-    return render_template("fb-complete.html",token = access_token, expires = expiration_date)
+    return render_template("admin/fb-complete.html",token = access_token, expires = expiration_date)
