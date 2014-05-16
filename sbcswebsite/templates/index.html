@@ -1,8 +1,22 @@
 {% extends "_base.html" %}
 {% block main_container %}
   <div id="main-collage">
-  </div>
-  <div class="container">
+   {% for post in feed.data  %}
+        <a href="https://www.facebook.com/profile.php?id={{post.from.id}}">{{post.from.name}}</a>: {{post.message}}
+        {% if post.likes %}
+                <a target="_blank" href="{{post.actions[1].link}}">{{post.likes.data|length}} likes</a>
+        {% else %}
+                <a target="_blank" href="{{post.actions[1].link}}">0 likes</a>
+        {% endif %}
+        &nbsp;|&nbsp;
+        {% if post.comments %}
+                <a target="_blank" href="{{post.actions[0].link}}">{{post.comments.data|length}} comments</a>
+        {% else %}
+                <a target="_blank" href="{{post.actions[0].link}}">0 comments</a>
+        {% endif %}
+        <br /> <br />
+   {% endfor %}
+
   </div>
 {% endblock %}
 {% block javascript %}

@@ -2,7 +2,7 @@ from application import app
 from flask import Flask, request, session
 from flask import render_template, redirect, url_for
 from flask.ext.login import login_user, login_required, current_user
-from sbcswebsite.models import JobPost, NewsPost, Question, Answer, Tag, User, db, question_tag_table, job_post_tag_table, news_post_tag_table
+from sbcswebsite.models import JobPost, NewsPost, Question, Answer, Tag, User, Token, db, question_tag_table, job_post_tag_table, news_post_tag_table
 from base64 import urlsafe_b64encode as b64encode, urlsafe_b64decode as b64decode
 import requests
 import os
@@ -11,9 +11,16 @@ import facebook
 from sbcswebsite.users import admin_required
 from datetime import datetime
 
+import time
+#Eric's todo:
+#What to do if there is no access_token in db?
+
 @app.route("/")
-def index(): 
-    return render_template("index.html")
+def index():
+    tokens = Token.query.limit(1).all()
+    graph = facebook.GraphAPI(tokens[0].access_token)
+    feed = graph.get_object("180130720983/feed") 
+    return render_template("index.html",feed=feed)
 
 @app.route("/calendar")
 def calendar(): 
@@ -162,3 +169,54 @@ def finish_login():
     login_user(user)
     return redirect(url_for("ask"))
 
+@app.route("/fb")
+def fb_index():
+    return render_template("fb-index.html")
+
+@app.route("/fb-complete")
+def fb_complete():
+    code = request.args.get('code')
+
+    base_url = "https://graph.facebook.com/oauth/access_token"
+    token_url = "{base}?client_id={app_id}&redirect_uri={redirect_uri}&client_secret={app_secret}&code={code}&scope={scope}".format(
+        base = base_url,
+        app_id = app.config["FACEBOOK_APP_ID"],
+        app_secret = app.config["FACEBOOK_APP_SECRET"],
+        redirect_uri = url_for("fb_complete", _external=True),
+        code = code,
+        scope = "user_groups"
+    )
+    response = requests.get(token_url)
+    data = urlparse.parse_qs(response.text)
+    if not data:
+        return "Invalid login", 400
+    access_token = data["access_token"][0]
+    
+    long_term_url = "{base}?grant_type=fb_exchange_token&client_id={app_id}&client_secret={app_secret}&fb_exchange_token={fb_exchange_token}".format(
+        base = base_url,
+        app_id = app.config["FACEBOOK_APP_ID"],
+        app_secret = app.config["FACEBOOK_APP_SECRET"],
+        fb_exchange_token = access_token
+    )
+    response = requests.get(long_term_url)
+    data = urlparse.parse_qs(response.text)
+    if not data:
+        return redirect('/error?'+response.text)
+    access_token = data["access_token"][0]
+    expires = int(data["expires"][0])
+
+    #Given the number of seconds left until expiration, figure out the date and time
+    now = time.mktime(datetime.now().timetuple())
+    expiration_date = datetime.fromtimestamp(expires+now)
+    
+    #Truncate that DB!  No sense in keeping all the old access tokens
+    Token.query.delete()
+
+    #Add the new token and it's expiration date.
+    token = Token()
+    token.access_token = access_token
+    token.expiration_date = expiration_date
+    db.session.add(token)
+    db.session.commit()
+
+    return render_template("admin/fb-complete.html",token = access_token, expires = expiration_date)

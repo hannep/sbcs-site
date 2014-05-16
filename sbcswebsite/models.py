@@ -64,6 +64,13 @@ class Tag(db.Model):
     def __str__(self):
         return self.tag
 
+class Token(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    access_token = db.Column(db.String(40), unique=True)
+    expiration_date = db.Column(db.DateTime)
+
+    def __str__(self):
+        return self.access_token
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)

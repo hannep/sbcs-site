@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="container">
+        Success!  You can check it out on the <a href="/">home page</a>.
+        <ul>
+                <li> The access token is {{token}}</li>
+                <li>It expires at exactly <strong>{{expires}}</strong></li>
+        </ul>
+  </div>
+{% endblock %}
+{% block javascript %}
+{% endblock %}
