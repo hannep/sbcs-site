@@ -20,3 +20,5 @@ python debug.py
 - Where to link to SIG pages? Boxes on the main page as well? 
 - Put in example Job Board post and intro text 
 - Write first blog post 
+
+-Adding Max Rogers to the project
